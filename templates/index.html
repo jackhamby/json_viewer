@@ -10,10 +10,10 @@
                 <div class="col-sm" style="margin-top: 10px;" >
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" >viewer</a>
+                            <a class="nav-link active" id="viewer" >viewer</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" >text</a>
+                            <a class="nav-link" id="text" >text</a>
                         </li>
                     </ul>     
                 </div>
@@ -22,14 +22,37 @@
             <!-- Main Content -->
             <div class="row" style="height: 90%">
                 <!-- Json text area -->
-                <div class="col-9" style="">
-                    <textarea class="j-text-area">
-copy your json here!
-                    </textarea>
+                <div class="col-9" >
+                    <textarea class="j-text-area" name="jsondump">copy your json here!</textarea>
                 </div>
                 <!-- Json detail side bar -->
-                <div class="col-3" style="">
+                <div class="col-3">
+                    <table class="table">
+                        <tr> 
+                            <td> Key</td>
+                            <td> Value </td>
+                        </tr>
+                        <tr>
+                            <td>Key</td>
+                            <td>Value</td>
+                        </tr>
 
+
+                    </table>
+                    <!-- <ul class="list-group" style="width: 50%; float: right;">
+                            <li class="list-group-item">key</li>
+                            <li class="list-group-item">key</li>
+                            <li class="list-group-item">key</li>
+                            <li class="list-group-item">key</li>
+                            <li class="list-group-item">key</li>
+                    </ul>
+                    <ul class="list-group" style="width: 50%; float: left">
+                            <li class="list-group-item">value</li>
+                            <li class="list-group-item">value</li>
+                            <li class="list-group-item">value</li>
+                            <li class="list-group-item">value</li>
+                            <li class="list-group-item">value</li>
+                    </ul> -->
                 </div>
 
 
@@ -38,16 +61,42 @@ copy your json here!
 
     </body>
 </html>
-
+<script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script type="text/javascript" src="../static/jquery-latest.js"></script>
 <script type="text/javascript">
+
+    $('textarea').on('click', function(event){
+        if (event.target.value == "copy your json here!"){
+            $(event.target).text("")
+        }
+    })
+
+    $('.nav-link').on('click', function(event){
+        console.log($(this))
+        $('.nav-link').removeClass("active");
+        if (!$(this).hasClass("active")){
+            $(this).addClass("active");
+        }
+    })
+
+    $('#text').on('click', function(event){
+
+    })
+
+    $('#viewer').on('click', function(event){
+        console.log('validate the json and render jstree')
+    })
+
+
 
 </script>
 
 <style>
 
+    .list-group-item {
+        padding: 5px;
+    }
 
     body {
         height: 100%;
@@ -80,6 +129,16 @@ copy your json here!
         resize: none;
         color: grey;
     }
+
+    .table {
+        font-size: 10px;
+    }
+
+    .table td {
+        padding: .25rem;
+    }
+
+
 
 
 </style>
