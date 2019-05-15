@@ -20,14 +20,14 @@
             </div>
 
             <!-- Main Content -->
-            <div class="row" style="height: 90%">
+            <div class="row" style="height: 90%; overflow: auto;">
                 <!-- Json text area -->
-                <div class="col-9" >
-                    <textarea class="j-text-area" id="jsondump">copy your json here!</textarea>
-                    <div class="tree-container" id="tree" style="display: none;"></div>
+                <div class="col-9">
+                    <textarea class="text-container" id="jsondump">copy your json here!</textarea>
+                    <div class="tree-container" id="tree"></div>
                 </div>
                 <!-- Json detail side bar -->
-                <div class="col-3">
+                <div class="col-3 detail-container" >
                     <table class="table">
                         <tr> 
                             <td> Key</td>
@@ -114,8 +114,17 @@
                         "icon" : "../static/images/array.gif"
 
                     }, 
-                    "leaf" : {
-                        "icon" : false
+                    "int" : {
+                        "icon" : "../static/images/int.png"
+                    },
+                    "bool" : {
+                        "icon" : "../static/images/bool.png"
+                    },
+                    "null" : {
+                        "icon" : "../static/images/null.png"
+                    },
+                    "string" : {
+                        "icon" : "../static/images/string.png"
                     }
                 },
                 "plugins" : ["types"]
@@ -159,7 +168,7 @@
             if (Array.isArray(value)){
                 node = new ArrayNode(key, value);
             }
-            else if (typeof(value) == "object"){
+            else if (typeof(value) == "object" && !(value === null)){
                 node = new ObjectNode(key, value);
             }
             else{
@@ -214,9 +223,24 @@
         to_jstree(){
             let jstree_node = {
                 "text" : `${this.key} : ${this.value}`,
-                "type" : "leaf"
+                "type" : this.get_type()
             }
             return jstree_node;
+        }
+
+        get_type(){
+            switch (typeof(this.value)){
+                case "string":
+                    return "string";
+                case "boolean":
+                    return "bool"
+                case "number":
+                    return "int"
+                case "object":
+                    return "null";
+                default:
+                    return "string";
+            }
         }
     }
 
@@ -303,7 +327,7 @@
         padding: 4px;
     }
 
-    .j-text-area {
+    .text-container {
         width: 100%;
         height: 100%;
         resize: none;
@@ -311,7 +335,16 @@
     }
 
     .tree-container {
+        width: 100%;
+        height: 100%;
         margin-top: 20px;
+        display: none;
+        overflow: scroll;
+    }
+
+    .detail-container {
+        height: 100%;
+        border-left: 1px solid black;
     }
 
     .table {
@@ -328,10 +361,11 @@
     }
 
 
-    .jstree-default .jstree-node {
+    .jstree-default .jstree-icon {
         /* max-height: 20px !important; */
         /* min-height: 20px; */
+        height: 18px;
+        width: 16px;
     }
-
 
 </style>
