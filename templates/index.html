@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <!-- Header -->
             <div class="row" style="height: 10%">
-                <div class="col-sm" style="margin-top: 10px;" >
+                <div class="col-9" style="margin-top: 10px;" >
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link" id="viewer" >viewer</a>
@@ -15,7 +15,10 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="text" >text</a>
                         </li>
-                    </ul>     
+                    </ul> 
+                </div>
+                <div class="col-3">
+                    <button id="format" class="format-button">format</button>    
                 </div>
             </div>
 
@@ -28,16 +31,6 @@
                 </div>
                 <!-- Json detail side bar -->
                 <div id="detail-container" class="col-3 detail-container" >
-                    <!-- <table class="table">
-                        <tr> 
-                            <td> key</td>
-                            <td> value </td>
-                        </tr>
-                        <tr>
-                            <td>key</td>
-                            <td>value</td>
-                        </tr>
-                    </table> -->
                 </div>
 
 
@@ -112,21 +105,8 @@
                     }
                 },
                 "contextmenu" : {
-                    "items" : function(node){                        
-                        return {
-                            "copy_inner" : {
-                                "label": "copy inner json",
-                                "action" : function(event){
-                                    context.copy_inner(node);
-                                }
-                            },
-                            "copy_outer" : {
-                                "label" : "copy outer json",
-                                "action" : function(event){
-                                    context.copy_outer(node);
-                                }
-                            }
-                        }
+                    "items" : function(node){  
+                        return context.create_context_menu(node);                   
                     }
                 },
                 "plugins" : ["types", "contextmenu"]
@@ -134,32 +114,61 @@
             return tree_data
         }
 
+        create_context_menu(jstree_node){
+            let context = this;
+            let node = this.get_node(jstree_node.id);
+            console.log(node)
+
+            if (!node){
+                return {
+                    "copy" : {
+                        "label" : "copy",
+                        "action" : function(event){
+                            copy_to_clipboard(g_json);
+                        }                 
+                    }
+                }
+            }
+            else if (node.parent === null || node.parent instanceof(ArrayNode)){
+                return {
+                    "copy" : {
+                        "label" : "copy",
+                        "action" : function(event){
+                            copy_to_clipboard(node.value);
+                        }                 
+                    }
+                }
+            }
+            else{
+                return {
+                    "copy_key" : {
+                        "label" : "copy key",
+                        "action" : function(event){
+                            copy_to_clipboard(node.key);
+
+                        }                 
+                    },
+                    "copy_value" : {
+                        "label" : "copy value",
+                        "action" : function(event){
+                            copy_to_clipboard(node.value);
+                        }                 
+                    },
+                    "copy_key_and_value" : {
+                        "label" : "copy key and value",
+                        "action" : function(event){
+                            copy_to_clipboard(`${JSON.stringify(node.key)} : ${JSON.stringify(node.value)}`);
+                        }  
+                    }
+                }
+            }
+        }
+
         render(){
             $(`#${this.dom_id}`).jstree('destroy');
             $(`#${this.dom_id}`).jstree(this.to_jstree());
         }
 
-        copy_inner(jstree_node){
-
-            let node = this.get_node(jstree_node.id)
-            if (node){
-                copy_to_clipboard(node.value)
-            }
-            else{
-                copy_to_clipboard(g_json)
-            }
-        }
-
-        copy_outer(jstree_node){
-            let node = this.get_node(jstree_node.id);
-            if (node && node.parent) {
-                copy_to_clipboard(node.parent.value);
-            }
-            else {
-                copy_to_clipboard(g_json);
-            }       
-
-        }
 
         get_node(id){
             let split_id = id.split('.');
@@ -331,8 +340,6 @@
 
 
     render_json_detail = function(json){
-        console.log('rendering detial for this');
-        console.log(json);
         $('#detail-container').empty();
         let table = $(`<table class='table'></table>`);
         for (let i in json){
@@ -381,6 +388,19 @@
         return json;
     }
 
+    $('#format').on('click', function(event){
+        if (!$('#text').hasClass("active")){
+            return
+        }
+        else {
+            let json_string = $('textarea').val();
+            if (parse_json(json_string)){
+                let formatted_json = JSON.stringify(JSON.parse(json_string), null, 4)
+                $('textarea').val(formatted_json);
+            }
+        }
+    })
+
 
     $('textarea').on('click', function(event){
         if (event.target.value == "copy your json here!"){
@@ -411,7 +431,6 @@
             let tree = new Tree('tree', json);
             tree.render();
             tree.handle();
-            console.log(tree.to_jstree())
         }
     })
 
@@ -424,6 +443,14 @@
 </script>
 
 <style>
+
+    .format-button {
+        margin-top: 3%;
+        margin-left: -25%;
+        float: left;
+        font-size: 10px;
+        left: 5%;
+    }
 
     .copy-text-area {
         position: absolute;
