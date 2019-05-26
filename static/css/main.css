@@ -1,0 +1,88 @@
+.format-button {
+    margin-top: 3%;
+    margin-left: -25%;
+    float: left;
+    font-size: 10px;
+    left: 5%;
+}
+
+.copy-text-area {
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+}
+
+.list-group-item {
+    padding: 5px;
+}
+
+body {
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+.nav-item {
+    font-size: 10px;
+    /* padding: 4px; */
+}
+
+.nav-link {
+    padding: 6px;
+}
+
+.nav-link.acive {
+    padding: 4px;
+}
+
+.text-container {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    color: grey;
+}
+
+.tree-container {
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    display: none;
+    overflow: scroll;
+    
+}
+
+.detail-container {
+    height: 100%;
+    border-left: 1px solid black;
+}
+
+.table {
+    font-size: 10px;
+}
+
+.table td {
+    padding: .25rem;
+}
+
+.jstree-anchor {
+    font-size: 10px;
+    /* max-height: 12px; */
+}
+
+
+.jstree-default .jstree-icon {
+    /* max-height: 20px !important; */
+    /* min-height: 20px; */
+    height: 18px;
+    width: 16px;
+}
+
+.vakata-context li > a {
+    font-size: 10px;
+}
