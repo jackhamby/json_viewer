@@ -44,6 +44,7 @@ html {
 .text-container {
     width: 100%;
     height: 100%;
+    overflow: scroll;
     resize: none;
     color: grey;
 }
@@ -54,7 +55,6 @@ html {
     margin-top: 20px;
     display: none;
     overflow: scroll;
-    
 }
 
 .detail-container {
@@ -85,4 +85,10 @@ html {
 
 .vakata-context li > a {
     font-size: 10px;
+}
+
+#search {
+    width:200px;
+    font-size: 10px;
+    display: none;
 }
